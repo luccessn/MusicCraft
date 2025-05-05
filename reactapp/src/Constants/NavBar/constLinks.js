@@ -3,9 +3,9 @@ import {
   IconBrandTabler,
   IconSettings,
   IconUserBolt,
-  IconRegistered,
   IconLogout,
   IconLogin2,
+  IconCarTurbine,
 } from "@tabler/icons-react";
 import React from "react";
 import { routes } from "../ConstRouts/routes";
@@ -30,6 +30,11 @@ export const constLinks = [
     icon: (
       <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
     ),
+    return: (
+      <div>
+        <h1 className="text-white bg-red-600 text-4xl">LALALA</h1>
+      </div>
+    ),
   },
   {
     label: "Settings",
@@ -42,7 +47,7 @@ export const constLinks = [
     label: "Registration",
     href: routes.signUp,
     icon: (
-      <IconRegistered className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      <IconCarTurbine className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
     ),
   },
   {

@@ -15,7 +15,7 @@ import { StarsBackground } from "../Ui/stars/stars-background";
 const Logo = ({ open }) => {
   return (
     <NavLink
-      to="#"
+      to="/"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
       {/* <img src={musicWeb} alt="" className=" w-96  " /> */}
@@ -26,7 +26,7 @@ const Logo = ({ open }) => {
           animate={{ opacity: 1 }}
           className="font-medium whitespace-pre text-black dark:text-white"
         >
-          Music Crafters
+          𝓜𝓾𝓼𝓲𝓬 𝓒𝓻𝓪𝓯𝓽𝓮𝓻𝓼
         </motion.span>
       )}
     </NavLink>

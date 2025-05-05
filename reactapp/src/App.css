@@ -6,7 +6,6 @@
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: #fff;
 
   /* Center slide text vertically */
   display: flex;
@@ -19,4 +18,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.rs-drawer-header {
+  background-color: #4a2568 !important; /* Tailwind bg-purple-800 */
+}
+
+.rs-btn.rs-btn-primary {
+  background-color: #9333ea !important; /* Tailwind bg-purple-600 */
+  border-color: #9333ea !important;
 }

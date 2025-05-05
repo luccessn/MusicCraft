@@ -5,7 +5,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const HomePrduct = ({ props }) => {
+const MainGridProduct = ({ props }) => {
   const [image, setImage] = useState(props.images.img1);
   const handleMouseEnter = () => {
     if (props.images.img2) {
@@ -21,8 +21,16 @@ const HomePrduct = ({ props }) => {
   // Naviget
   const navigate = useNavigate();
   const goDTL = () => {
-    navigate(`/productdetail/${props.id}`);
-    window.scrollTo(0, 0);
+    if (props.member === "cover") {
+      navigate(`/cvdetail/${props.id}`);
+      window.scrollTo(0, 0);
+    } else if (props.type === "tshirt") {
+      navigate(`/tshirtdetail/${props.id}`);
+    } else if (props.type === "case") {
+      navigate(`/casedetail/${props.id}`);
+    } else if (props.type === "hood") {
+      navigate(`/hooddetail/${props.id}`);
+    }
   };
   return (
     <div
@@ -59,13 +67,12 @@ const HomePrduct = ({ props }) => {
               </span>
 
               {props.orgprice ? (
-                <span className="text-sm text-gray-500 line-through font-bold  text-red-600 text-center">
+                <span className="text-sm  line-through font-bold  text-red-600 text-center">
                   {props.orgprice}
                 </span>
               ) : (
                 ""
               )}
-              <h1 className="text-blue-400">{props._id}</h1>
             </div>
             {/* <p className="text-xs text-gray-400">ID: 23432252</p> */}
           </div>
@@ -78,4 +85,4 @@ const HomePrduct = ({ props }) => {
   );
 };
 
-export default HomePrduct;
+export default MainGridProduct;

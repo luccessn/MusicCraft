@@ -156,13 +156,13 @@ export const SidebarLink = ({
       dispatch(link.dispatch);
     }
 
-    // Handle navigation if no sub-items
-    if (link.href && link.href !== "#" && !link.contents) {
+    // Handle navigation if no sub-items or return
+    if (link.href && link.href !== "#" && !link.contents && !link.return) {
       navigate(link.href);
     }
 
-    // Toggle expansion if the link has contents
-    if (link.contents) {
+    // Toggle expansion if the link has contents or return
+    if (link.contents || link.return) {
       setIsExpanded(!isExpanded);
     }
   };
@@ -269,6 +269,24 @@ export const SidebarLink = ({
               </div>
             ))}
           </div>
+        </motion.div>
+      )}
+
+      {/* 👇 ADD THIS BELOW 👇 */}
+      {link.return && (
+        <motion.div
+          initial={false}
+          animate={{
+            height: isExpanded ? "auto" : 0,
+            opacity: isExpanded ? 1 : 0,
+          }}
+          transition={{ duration: 0.2 }}
+          className="overflow-hidden"
+          style={{
+            paddingLeft: animate ? (open ? "2.5rem" : "0") : "2.5rem",
+          }}
+        >
+          <div className="py-1">{link.return}</div>
         </motion.div>
       )}
     </div>

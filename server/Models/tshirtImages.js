@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const CvImagesSchema = new mongoose.Schema({
+const TshImagesSchema = new mongoose.Schema({
   id: String, // ← ეს უნდა იყოს
   name: String,
   descr: String,
@@ -10,7 +10,8 @@ const CvImagesSchema = new mongoose.Schema({
     img2: String,
     img3: String,
   },
+  type: String,
 });
 
-const CvImagesModel = mongoose.model("coverImages", CvImagesSchema);
-module.exports = CvImagesModel;
+const TshImagesModel = mongoose.model("tshirtimages", TshImagesSchema);
+module.exports = TshImagesModel;
