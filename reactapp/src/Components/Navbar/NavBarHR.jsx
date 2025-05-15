@@ -9,16 +9,31 @@
 import React, { useState } from "react";
 import { Menu, X, Search, ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Drawer, Button } from "rsuite";
-// import "rsuite/dist/rsuite.css";
+// import { Drawer, Button } from "rsuite";
+import "rsuite/dist/rsuite.css";
+import { Badge } from "rsuite";
+
 import "rsuite/dist/rsuite-no-reset.min.css";
 import { useAppContext } from "../../Context/AppContextReducer";
 import { clearCart } from "../../Context/AppActionsCreator";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { routes } from "../../Constants/ConstRouts/routes";
+import CartCard from "./CartCard";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
+  Button,
+  useDisclosure,
+} from "@heroui/react";
+import { StarsBackground } from "../Ui/stars/stars-background";
 const NavBarHR = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [openWithHeader, setOpenWithHeader] = React.useState(false);
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [Open, setIsOpen] = useState(false);
+  // const [openWithHeader, setOpenWithHeader] = React.useState(false);
   const { state, dispatch } = useAppContext();
   const smMenu = [
     { title: "Home", path: routes.home },
@@ -34,13 +49,13 @@ const NavBarHR = () => {
       <nav className="flex items-center justify-between px-6 py-4 ">
         {/* Menu Icon */}
         <motion.button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(!Open)}
           className="transition-transform duration-200"
           initial={false}
-          animate={{ rotate: isOpen ? 90 : 0, opacity: 1 }}
+          animate={{ rotate: Open ? 90 : 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          {isOpen ? (
+          {Open ? (
             <X className="w-6 h-6 text-white" />
           ) : (
             <Menu className="w-6 h-6 text-white" />
@@ -59,43 +74,133 @@ const NavBarHR = () => {
         {/* Icons */}
         <div className="flex gap-4">
           <Search className="text-white w-5 h-5 hover:scale-110 transition-transform duration-150" />
-          <button onClick={() => setOpenWithHeader(true)}>
-            <ShoppingCart className="text-white w-5 h-5 hover:scale-110 transition-transform duration-150" />
-          </button>
+          <Badge content={state.cartItems.length}>
+            <button onClick={onOpen}>
+              <ShoppingCart className="text-white w-5 h-5 hover:scale-110 transition-transform duration-150" />
+            </button>
+          </Badge>
           <Drawer
-            open={openWithHeader}
-            onClose={() => setOpenWithHeader(false)}
-            size="xs"
+            isOpen={isOpen}
+            motionProps={{
+              variants: {
+                enter: {
+                  opacity: 1,
+                  x: 0,
+                  duration: 0.3,
+                },
+                exit: {
+                  x: 100,
+                  opacity: 0,
+                  duration: 0.3,
+                },
+              },
+            }}
+            onOpenChange={onOpenChange}
+            size="md"
           >
-            <div className="h-full flex flex-col bg-zinc-900">
-              <Drawer.Header>
-                <Drawer.Title>Drawer Title</Drawer.Title>
+            <DrawerContent className="bg-purple-950 rounded-sm">
+              {(onClose) => (
+                <>
+                  <DrawerHeader className="flex flex-col gap-1 bg-zinc-800 text-white ">
+                    <div className="flex flex-col gap-5">
+                      <h1 className="text-3xl ">Your Cart</h1>
+                      <div className="flex flex-row justify-between font-serif">
+                        <h1 className="text-medium">Product</h1>
+                        <h1 className="text-medium">Total</h1>
+                      </div>
+                    </div>
+                    <StarsBackground />
+                  </DrawerHeader>
+                  <DrawerBody>
+                    <div className="flex flex-col gap-5 ">
+                      {state.cartItems.map((item) => (
+                        // <h1 key={item.id || index} className="text-4xl">
+                        //   {item.name}
+                        // </h1>
+                        <CartCard key={item.id} props={item} />
+                      ))}
+                    </div>
+                  </DrawerBody>
+                  <DrawerFooter className="bg-zinc-800 flex flex-col gap-3">
+                    {/* Total price calculation */}
+                    <div className="w-full text-white text-xl font-mono flex justify-between px-2 ">
+                      <span>Estimated total :</span>
+                      <span>
+                        {state.cartItems
+                          .reduce((acc, item) => {
+                            const price = parseFloat(
+                              item.price.replace("$", "")
+                            );
+                            return acc + price * item.quantity;
+                          }, 0)
+                          .toFixed(2)}{" "}
+                        $
+                      </span>
+                    </div>
+                    <button
+                      onClick={() =>
+                        navigate(routes.checkout, {
+                          state: {
+                            total: state.cartItems
+                              .reduce((acc, item) => {
+                                const price = parseFloat(
+                                  item.price.replace("$", "")
+                                );
+                                return acc + price * item.quantity;
+                              }, 0)
+                              .toFixed(2),
+                          },
+                        })
+                      }
+                      className="cursor-pointer relative bg-white/10 py-2 rounded-full min-w-[8.5rem] min-h-[2.92rem] group max-w-full flex items-center justify-start hover:bg-purple-950 transition-all duration-[0.8s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] shadow-[inset_1px_2px_5px_#00000080]"
+                    >
+                      <div className="absolute flex px-1 py-0.5 justify-start items-center inset-0">
+                        <div className="w-[0%] group-hover:w-full transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)]" />
+                        <div className="rounded-full shrink-0 flex justify-center items-center shadow-[inset_1px_-1px_3px_0_black] h-full aspect-square bg-purple-900 transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] group-hover:bg-black">
+                          <div className="size-[0.8rem] text-black group-hover:text-white group-hover:-rotate-45 transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)]">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 16 16"
+                              height="100%"
+                              width="100%"
+                            >
+                              <path
+                                fill="currentColor"
+                                d="M12.175 9H0V7H12.175L6.575 1.4L8 0L16 8L8 16L6.575 14.6L12.175 9Z"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="pl-[3.4rem]  pr-[1.1rem] group-hover:pl-[1.1rem] group-hover:pr-[3.4rem] transition-all duration-[1s] ease-[cubic-bezier(0.510,0.026,0.368,1.016)] group-hover:text-black text-white text-medium tracking-widest">
+                        𝐂𝐡𝐞𝐜𝐤 𝐎𝐮𝐭
+                      </div>
+                    </button>
 
-                <Button
-                  onClick={() => dispatch(clearCart())}
-                  color="red"
-                  appearance="primary"
-                >
-                  Clear All
-                </Button>
-              </Drawer.Header>
-              <Drawer.Body>
-                <div className="flex flex-col gap-2">
-                  {state.cartItems.map((item, index) => (
-                    <h1 key={item.id || index} className="text-4xl">
-                      {item.name}
-                    </h1>
-                  ))}
-                </div>
-              </Drawer.Body>
-            </div>
+                    {/* Buttons */}
+                    <div className="flex w-full justify-end gap-3">
+                      <Button color="danger" variant="light" onPress={onClose}>
+                        Close
+                      </Button>
+                      <Button
+                        color="danger"
+                        onPress={() => dispatch(clearCart())}
+                      >
+                        Clear All
+                      </Button>
+                    </div>
+                  </DrawerFooter>
+                </>
+              )}
+            </DrawerContent>
           </Drawer>
         </div>
       </nav>
 
       {/* AnimatePresence for sidebar + overlay */}
       <AnimatePresence>
-        {isOpen && (
+        {Open && (
           <>
             {/* Overlay */}
             <motion.div

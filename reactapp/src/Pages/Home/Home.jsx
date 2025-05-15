@@ -12,6 +12,7 @@ import { HomeShowProducts } from "../../Components/Home/HomeShowProducts";
 import Ghost from "../../Components/Home/LoadersHM/Ghost";
 import Flamer from "../../Components/Home/LoadersHM/Flamer";
 import { useAppContext } from "../../Context/AppContextReducer";
+
 // import FuzzyText from "../../Components/Ui/textFZ/FuzzyText";
 // import Spline from "@splinetool/react-spline";
 export const Home = () => {
@@ -19,7 +20,6 @@ export const Home = () => {
   //cart test
   const { state } = useAppContext();
   console.log(state);
-
   return (
     <motion.div
       className="text-5xl p-6 text-white"

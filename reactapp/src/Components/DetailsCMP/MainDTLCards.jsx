@@ -7,7 +7,11 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import MainDTLCard from "./MainDTLCard";
 import { useAppContext } from "../../Context/AppContextReducer";
-import { addToCart } from "../../Context/AppActionsCreator";
+import {
+  addToCart,
+  CounterDecrement,
+  CounterIncriment,
+} from "../../Context/AppActionsCreator";
 
 const MainDTLCards = ({ data }) => {
   const [isZoomed, setIsZoomed] = useState(false);
@@ -23,18 +27,18 @@ const MainDTLCards = ({ data }) => {
   const sizes = ["Small", "Medium", "Large", "XL", "XXL", "XXXL"];
   const [selectedSize, setSelectedSize] = useState(null);
   //counter
-  const [Counter, setCounter] = useState(1);
   // cart logic
-  const { dispatch } = useAppContext();
+  const { state, dispatch } = useAppContext();
   const AddToCart = () => {
     const itemToAdd = {
-      id: data._id,
+      id: `${data._id}-${selectedSize}`, // უნიკალური ID ზომის მიხედვით
       name: data.name,
       image: data.images?.img1,
       price: data.price,
       size: selectedSize,
-      quantity: Counter,
+      quantity: state.counter,
     };
+    console.log(itemToAdd);
     dispatch(addToCart(itemToAdd));
   };
   console.log(data);
@@ -96,8 +100,16 @@ const MainDTLCards = ({ data }) => {
 
           <div className="flex flex-row gap-2">
             <h1 className="text-3xl font-semibold text-green-500">
-              {data.price}
+              {data?.price
+                ? `${state.counter * parseFloat(data.price.replace("$", ""))} $`
+                : "Loading..."}
             </h1>
+
+            {/* {data.price && Counter > 1 && (
+              <span className="text-sm text-gray-400 ml-2">
+                ({Counter} × ${data.price}) = $
+              </span>
+            )} */}
 
             {data.orgprice ? (
               <h1 className="text-2xl  line-through font-bold  text-red-600 text-center">
@@ -159,16 +171,16 @@ const MainDTLCards = ({ data }) => {
             <h1 className="text-xl">Quantity</h1>
             <div className="text-xl flex flex-row items-center gap-3 relative left-10">
               <button
-                onClick={() => setCounter((prev) => Math.max(prev - 1, 1))}
+                onClick={() => dispatch(CounterDecrement(1))}
                 className={`px-3 py-1 rounded ${
-                  Counter === 1 ? " text-gray-600" : "text-white"
+                  state.counter === 1 ? " text-gray-600" : "text-white"
                 }`}
               >
                 -
               </button>
-              <h1>{Counter}</h1>
+              <h1>{state.counter}</h1>
               <button
-                onClick={() => setCounter((prev) => prev + 1)}
+                onClick={() => dispatch(CounterIncriment(1))}
                 className="px-3 py-1  rounded"
               >
                 +

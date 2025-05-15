@@ -5,6 +5,8 @@ import {
   ADD_TO_CART,
   AppActions,
   CLEAR_CART,
+  DECREMENT,
+  INCREMENT,
   REMOVE_FROM_CART,
 } from "./AppActions";
 export const authenticatedAction = (token) => {
@@ -34,4 +36,10 @@ export const clearCart = () => {
   return {
     type: CLEAR_CART,
   };
+};
+export const CounterIncriment = (payload) => {
+  return { type: INCREMENT, payload };
+};
+export const CounterDecrement = (payload) => {
+  return { type: DECREMENT, payload };
 };

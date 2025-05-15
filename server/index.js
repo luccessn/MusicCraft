@@ -7,13 +7,14 @@ const CaseImagesModel = require("./Models/caseImages");
 const HodImagesModel = require("./Models/hoodImages");
 const TshImagesModel = require("./Models/tshirtImages");
 // const PsImagesModel = require("./Models/psImages");
-
 const app = express();
-
-// Cors
-
+// Middleware-ები
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // ✅ პირველი უნდა იყოს
+
+// Stripe-ის როუტი
+const paymentRoutes = require("./routes/paymentRoutes");
+app.use("/api/payments", paymentRoutes); // ✅
 
 //MongoDB
 mongoose

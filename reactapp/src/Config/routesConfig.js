@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { routes } from "../Constants/ConstRouts/routes";
 import AuthGuard from "../Guard/AuthGuard";
+import CheckOuts from "../Pages/Checkout/CheckOuts";
 import CaseImagesDTL from "../Pages/DetailsPageS/CaseImagesDTL";
 import CoverImagesDTL from "../Pages/DetailsPageS/CoverImagesDTL";
 import HoodImagesDTL from "../Pages/DetailsPageS/HoodImagesDTL";
@@ -22,6 +23,7 @@ export const routesConfig = [
   { path: routes.casedtl, Component: CaseImagesDTL },
   { path: routes.tshdtl, Component: TshImagesDTL },
   { path: routes.hoddtl, Component: HoodImagesDTL },
+  { path: routes.checkout, Component: CheckOuts },
   { path: routes.signUp, Component: SignUp },
   { path: routes.signIn, Component: SignIn },
   { path: routes.test, Component: testpage },

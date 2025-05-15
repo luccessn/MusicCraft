@@ -8,6 +8,7 @@ export const routes = {
   casedtl: "/casedetail/:prID",
   tshdtl: "/tshirtdetail/:prID",
   hoddtl: "/hooddetail/:prID",
+  checkout: "/checkouts",
   signUp: "/signup",
   signIn: "/signin",
   test: "/test",
